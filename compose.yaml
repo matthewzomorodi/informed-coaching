@@ -1,0 +1,9 @@
+name: informedcoaching
+version: "1"
+
+services:
+  frontend:
+    build: .
+    hostname: informed-coaching
+    ports:
+      - "8080:80"

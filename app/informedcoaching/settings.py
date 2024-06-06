@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 
 import environ
-
-print('Django settings importing...')
 env = environ.Env()
 environ.Env.read_env()
 
