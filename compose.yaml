@@ -2,7 +2,7 @@ name: informedcoaching
 version: "1"
 
 services:
-  frontend:
+  app:
     build: .
     hostname: informed-coaching
     ports:
