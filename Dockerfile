@@ -28,7 +28,7 @@ COPY sites-available/*.conf /etc/apache2/sites-available
 COPY --chown=www-data:www-data app /usr/local/www/app
 
 # set Django production environment
-COPY --chown=www-data:www-data environment_production.py /usr/local/www/app/informedcoaching/environment.py
+COPY --chown=www-data:www-data .env /usr/local/www/app/.env
 
 # collect static files
 RUN /usr/.virtualenvs/informed-coaching/bin/python \

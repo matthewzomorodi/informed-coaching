@@ -1,9 +1,38 @@
 name: informedcoaching
-version: "1"
 
 services:
-  frontend:
+  db:
+    image: mariadb:11.4.2-noble
+    container_name: informed_coaching_mariadb
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    env_file: .env
+    ports:
+      - "3306:3306"
+    networks:
+      - backend_db
+    healthcheck:
+      test: ["CMD", "mariadb", "-h", "localhost", "-u", "root",
+        "-p$MYSQL_ROOT_PASSWORD", "$MYSQL_DATABASE"
+      ]
+      timeout: 20s
+      retries: 5
+
+  backend:
     build: .
+    container_name: informed_coaching_backend
     hostname: informed-coaching
     ports:
       - "8080:80"
+    networks:
+      - backend_db
+    depends_on:
+      db:
+        condition: service_healthy
+
+networks:
+  backend_db:
+
+volumes:
+  data:
