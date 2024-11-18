@@ -164,4 +164,7 @@ cython_debug/
 #.idea/
 
 # VS Code settings
-.vscode
+.vscode/
+
+# Django media files
+media/

@@ -22,7 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Configure environment variables. Interpolate for Bash-style config
 # to ensure configuration of database variables in environment file.
 env = environ.Env(interpolate=True)
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# By default, django-environ uses existing values of environment variables,
+# if they exist, so explicitly set the environment with the values defined
+# in the .env file. This also requires that the .env file explicitly set
+# variables with null values to ensure defaults defined here are used.
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'), overwrite=True)
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +37,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG')
+DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
@@ -129,10 +134,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# destination folder for collectstatic command
-STATIC_ROOT = env.str('STATIC_ROOT')
+# Destination folder for collectstatic command
+STATIC_ROOT = env.str('STATIC_ROOT', default='')
 
-STATIC_URL = env.str('STATIC_URL')
+STATIC_URL = env.str('STATIC_URL', default='static/')
+
+# Media files (i.e. User uploaded files)
+# https://docs.djangoproject.com/en/5.0/ref/settings/#std-setting-MEDIA_ROOT
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+# https://docs.djangoproject.com/en/5.0/ref/views/#serving-files-in-development
+# https://docs.djangoproject.com/en/5.0/howto/static-files/deployment/
+
+# Absolute filesystem path to the directory that will hold user-uploaded files
+MEDIA_ROOT = env.str('MEDIA_ROOT', default=os.path.join(BASE_DIR.parent, 'media/'))
+
+MEDIA_URL= env.str('MEDIA_URL', 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
